@@ -21,16 +21,21 @@ Prompts:
 
 ## 3. How the Model Works  
 
-Explain your scoring approach in simple language.  
+The recommender compares every song with one listener taste profile. It gives a
+song two points when its genre matches the listener's favorite genre and one
+and a half points when its mood matches the listener's favorite mood. It also
+compares energy, valence, danceability, and acousticness. A song receives more
+points when each of those values is closer to the listener's target and fewer
+points as it gets farther away. These parts add up to a maximum score of six
+points.
 
-Prompts:  
-
-- What features of each song are used (genre, energy, mood, etc.)  
-- What user preferences are considered  
-- How does the model turn those into a score  
-- What changes did you make from the starter logic  
-
-Avoid code here. Pretend you are explaining the idea to a friend who does not program.
+After every song has been scored, the system sorts the catalog from highest to
+lowest score and returns the top choices. Each result includes the reasons that
+contributed points, making the recommendation easy to inspect. Genre has the
+largest individual weight, while the numerical comparisons allow songs from
+other genres to rank well when they have a similar overall sound. Tempo is not
+scored separately because it closely overlaps with energy in this small
+dataset.
 
 ---
 
