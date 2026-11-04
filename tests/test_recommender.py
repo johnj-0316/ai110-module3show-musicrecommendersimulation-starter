@@ -1,4 +1,7 @@
-from src.recommender import Song, UserProfile, Recommender
+import pytest
+
+from src.recommender import Recommender, Song, UserProfile
+
 
 def make_small_recommender() -> Recommender:
     songs = [
@@ -36,6 +39,9 @@ def test_recommend_returns_songs_sorted_by_score():
         favorite_mood="happy",
         target_energy=0.8,
         likes_acoustic=False,
+        target_valence=0.9,
+        target_danceability=0.8,
+        target_acousticness=0.2,
     )
     rec = make_small_recommender()
     results = rec.recommend(user, k=2)
@@ -44,6 +50,27 @@ def test_recommend_returns_songs_sorted_by_score():
     # Starter expectation: the pop, happy, high energy song should score higher
     assert results[0].genre == "pop"
     assert results[0].mood == "happy"
+    assert results[1].genre == "lofi"
+
+
+def test_score_song_returns_expected_score_and_reasons():
+    user = UserProfile(
+        favorite_genre="pop",
+        favorite_mood="happy",
+        target_energy=0.8,
+        likes_acoustic=False,
+        target_valence=0.9,
+        target_danceability=0.8,
+        target_acousticness=0.2,
+    )
+    rec = make_small_recommender()
+
+    score, reasons = rec.score_song(user, rec.songs[0])
+
+    assert score == pytest.approx(6.0)
+    assert "genre match (+2.0)" in reasons
+    assert "mood match (+1.5)" in reasons
+    assert "energy similarity 100% (+1.00)" in reasons
 
 
 def test_explain_recommendation_returns_non_empty_string():
@@ -52,10 +79,14 @@ def test_explain_recommendation_returns_non_empty_string():
         favorite_mood="happy",
         target_energy=0.8,
         likes_acoustic=False,
+        target_valence=0.9,
+        target_danceability=0.8,
+        target_acousticness=0.2,
     )
     rec = make_small_recommender()
     song = rec.songs[0]
 
     explanation = rec.explain_recommendation(user, song)
     assert isinstance(explanation, str)
-    assert explanation.strip() != ""
+    assert "genre match (+2.0)" in explanation
+    assert "energy similarity 100% (+1.00)" in explanation
