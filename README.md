@@ -17,17 +17,46 @@ Replace this paragraph with your own summary of what your version does.
 
 ## How The System Works
 
-Explain your design in plain language.
+Each song is represented by its genre, mood, energy, tempo, valence,
+danceability, and acousticness. The recommender compares those attributes with a
+specific user taste profile. The initial profile favors happy pop music with
+high energy (0.80), valence (0.85), and danceability (0.80), plus low
+acousticness (0.20). Tempo is stored as useful song information but is not
+scored because it overlaps strongly with energy in this small dataset.
 
-Some prompts to answer:
+### Algorithm Recipe
 
-- What features does each `Song` use in your system
-  - For example: genre, mood, energy, tempo
-- What information does your `UserProfile` store
-- How does your `Recommender` compute a score for each song
-- How do you choose which songs to recommend
+The recommender calculates a score for every song using these rules:
 
-You can include a simple diagram or bullet list if helpful.
+- Add **2.0 points** for an exact genre match.
+- Add **1.5 points** for an exact mood match.
+- Add up to **1.0 point** for energy similarity.
+- Add up to **0.75 points** for valence similarity.
+- Add up to **0.50 points** for danceability similarity.
+- Add up to **0.25 points** for acousticness similarity.
+
+For every numerical feature, similarity is calculated as:
+
+```text
+similarity = 1 - abs(user target - song value)
+```
+
+All numerical values range from 0 to 1, so a perfect match receives all the
+available points and a more distant value receives proportionally fewer. The
+maximum possible score is 6.0. After scoring the catalog, the recommender sorts
+the songs from highest to lowest score and returns the top `k` songs. An
+explanation identifies the strongest matches behind each recommendation.
+
+### Expected Biases
+
+Genre has the largest single weight, so the system may over-prioritize familiar
+genres and miss excellent cross-genre songs that match the user's mood and
+audio preferences. Exact genre and mood labels also cannot represent related
+categories, such as pop and indie pop. The small, synthetic catalog may make
+some genres and moods appear more typical than they are, and it contains no
+information about lyrics, vocals, language, cultural context, or changes within
+a song. Finally, a fixed profile cannot capture how a listener's preferences
+change by activity, setting, or time.
 
 ---
 
