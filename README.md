@@ -154,10 +154,13 @@ Read and complete `model_card.md`:
 
 [**Model Card**](model_card.md)
 
-Write 1 to 2 paragraphs here about what you learned:
+My biggest learning moment is how recommending algorithms are not rigid, but heavily customizable based on formulas that we create. I've always believed that the algorithms behind apps like YouTube and Twitter were impossibly large, and while they may scale higher than this app, they likely still rely on the same weights and data from real users. This app is not too different in that sense.
 
-- about how recommenders turn data into predictions
-- about where bias or unfairness could show up in systems like this
+AI tools streamline implementation, but I need to make sure I understand the logic and reasoning behind them to ensure that nothing is over-engineered or overly complicated. I also need to ensure the generated code meets my standards and requirements, despite how powerful models are today.
+
+Bias and unfairness can still appear, as rigid algorithms and even llms can only go so far with calculations. Bias and unfairness can still show up from unclean and unfiltered data, as well as improper weights, resulting in unexpected recommendations or rankings.
+
+If I were to continue this project, I would fine tune the formulas to fit real users, allow users to input their own preferences in a UI, and allow users to fine tune their own recommendations. Spotify does this automatically via our listens, but even Spotify can misinterpret what kind of vibe I want next without my input.
 
 
 
