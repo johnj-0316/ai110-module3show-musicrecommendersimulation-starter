@@ -97,42 +97,54 @@ You can add more tests in `tests/test_recommender.py`.
 
 ## Sample Recommendation Output
 
-Paste a sample of your recommender's output here as a text block so a reader can see what it produces:
+This example uses the High-Energy Pop profile and the original weights:
 
+```text
+1. Sunrise City - 5.83
+   Reasons: genre match (+2.0); mood match (+1.5); energy similarity 92% (+0.92); valence similarity 94% (+0.70); danceability similarity 94% (+0.47); acousticness similarity 92% (+0.23)
+2. Gym Hero - 4.34
+   Reasons: genre match (+2.0); energy similarity 97% (+0.97); valence similarity 87% (+0.65); danceability similarity 97% (+0.48); acousticness similarity 95% (+0.24)
+3. Rooftop Lights - 3.71
+   Reasons: mood match (+1.5); energy similarity 86% (+0.86); valence similarity 91% (+0.68); danceability similarity 97% (+0.48); acousticness similarity 75% (+0.19)
+4. Sidewalk Bounce - 2.25
+   Reasons: energy similarity 84% (+0.84); valence similarity 93% (+0.70); danceability similarity 94% (+0.47); acousticness similarity 98% (+0.24)
+5. Tomorrow Tide - 2.12
+   Reasons: energy similarity 73% (+0.73); valence similarity 96% (+0.72); danceability similarity 99% (+0.49); acousticness similarity 72% (+0.18)
 ```
-# e.g.:
-# User profile: genre=indie, mood=chill, energy=low
-# Recommendations:
-#   1. ...
-#   2. ...
-#   3. ...
-```
-
-**Screenshot or video** *(optional)*: <!-- Insert a screenshot or demo video link here -->
 
 ---
 
 ## Experiments You Tried
 
-Use this section to document the experiments you ran. For example:
+I tested four profiles: High-Energy Pop, Chill Lofi, Deep Intense Rock, and
+Conflicted Melancholic Metal. The first three profiles produced intuitive top
+matches. The conflicting profile tested high energy together with low valence
+and high acousticness.
 
-- What happened when you changed the weight on genre from 2.0 to 0.5
-- What happened when you added tempo or valence to the score
-- How did your system behave for different types of users
+I also compared two six-point weighting recipes. The original recipe gives
+genre 2.0 points. The balanced recipe lowers genre to 1.0 and gives more weight
+to energy, valence, danceability, and acousticness. Three rankings changed:
+
+- Rooftop Lights moved above Gym Hero for High-Energy Pop.
+- Spacewalk Thoughts moved above Focus Flow for Chill Lofi.
+- Blue County Line moved above Crown of Thunder for the conflicting profile.
+
+The Deep Intense Rock order did not change. These results show that lowering
+the genre weight makes cross-genre audio matches more competitive.
 
 ---
 
 ## Limitations and Risks
 
-Summarize some limitations of your recommender.
+The catalog contains only 18 fictional songs. It cannot represent the range of
+real artists, cultures, genres, or production styles. The model does not use
+lyrics, language, listening history, or the user's current activity.
 
-Examples:
-
-- It only works on a tiny catalog
-- It does not understand lyrics or language
-- It might over favor one genre or mood
-
-You will go deeper on this in your model card.
+Exact genre and mood labels treat related categories as different. The
+original weights can over-prioritize genre and hide strong cross-genre songs.
+The balanced weights reduce that bias, but they may underweight a genre choice
+that the user cares about. Fixed weights also assume every listener defines a
+musical vibe in the same way.
 
 ---
 
